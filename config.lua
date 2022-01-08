@@ -29,6 +29,7 @@ Config.VendingItem = {
     },
 }
 
+Config.CraftingItemsLocation = vector3(610.96, -3072.89, 6.07)
 Config.CraftingItems = {
     [1] = {
         name = "lockpick",
