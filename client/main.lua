@@ -846,26 +846,28 @@ end)
 
 CreateThread(function()
 	while true do
-		Wait(0)
-		local pos, awayFromObject = GetEntityCoords(PlayerPedId()), true
-		local craftObject = GetClosestObjectOfType(pos, 2.0, -573669520, false, false, false)
-		if craftObject ~= 0 then
-			local objectPos = GetEntityCoords(craftObject)
-			if #(pos - objectPos) < 1.5 then
-				awayFromObject = false
-				DrawText3Ds(objectPos.x, objectPos.y, objectPos.z + 1.0, "~g~E~w~ - Craft")
-				if IsControlJustReleased(0, 38) then
+		local pos = GetEntityCoords(PlayerPedId())
+		local inRange = false
+		local distance = #(pos - vector3(Config.CraftingItemsLocation))
+
+		if distance < 10 then
+			inRange = true
+			if distance < 1.5 then
+				DrawText3Ds(Config.CraftingItemsLocation.x, Config.CraftingItemsLocation.y, Config.CraftingItemsLocation.z, "~g~E~w~ - Craft")
+				if IsControlJustPressed(0, 38) then
 					local crafting = {}
 					crafting.label = "Crafting"
-					crafting.items = GetThresholdItems()
+					crafting.items = GetAttachmentThresholdItems()
 					TriggerServerEvent("inventory:server:OpenInventory", "crafting", math.random(1, 99), crafting)
 				end
 			end
 		end
 
-		if awayFromObject then
+		if not inRange then
 			Wait(1000)
 		end
+
+		Wait(3)
 	end
 end)
 
